@@ -27,9 +27,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     Activity activity;
     List<Recipe> recipes;
 
-    public RecipeAdapter(Activity activity, List<Recipe> recipes) {
+    OnItemClick listener;
+
+    public RecipeAdapter(Activity activity, List<Recipe> recipes, OnItemClick listener) {
         this.activity = activity;
         this.recipes = recipes;
+        this.listener = listener;
     }
 
     @Override
@@ -51,11 +54,17 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
                 .setDefaultRequestOptions(requestOptions)
                 .load(recipe.getImage())
                 .into(holder.recipeImageView);
+
+        holder.bind(recipe, listener);
     }
 
     @Override
     public int getItemCount() {
         return recipes.size();
+    }
+
+    public interface OnItemClick{
+        public void onItemClicked(Recipe recipe);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
@@ -65,9 +74,21 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         TextView servingTextView;
         @BindView(R2.id.imageView_recipeImage)
         ImageView recipeImageView;
+
+        View parentView;
         public ViewHolder(View itemView) {
             super(itemView);
+            parentView = itemView;
             ButterKnife.bind(this, itemView);
+        }
+
+        public void bind(final Recipe recipe, final OnItemClick listener){
+            parentView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClicked(recipe);
+                }
+            });
         }
     }
 }

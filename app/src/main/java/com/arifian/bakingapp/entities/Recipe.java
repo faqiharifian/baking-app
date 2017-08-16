@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by faqih on 15/08/17.
@@ -18,9 +17,9 @@ public class Recipe implements Parcelable {
     @SerializedName("name")
     String name;
     @SerializedName("ingredients")
-    List<Ingredient> ingredients;
+    ArrayList<Ingredient> ingredients;
     @SerializedName("steps")
-    List<Step> steps;
+    ArrayList<Step> steps;
     @SerializedName("servings")
     Integer servings;
     @SerializedName("image")
@@ -34,11 +33,11 @@ public class Recipe implements Parcelable {
         return name;
     }
 
-    public List<Ingredient> getIngredients() {
+    public ArrayList<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public List<Step> getSteps() {
+    public ArrayList<Step> getSteps() {
         return steps;
     }
 

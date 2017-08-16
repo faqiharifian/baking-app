@@ -1,5 +1,6 @@
 package com.arifian.bakingapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -44,7 +45,14 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(getString(R.string.main_title));
 
-        recipeAdapter = new RecipeAdapter(this, recipes);
+        recipeAdapter = new RecipeAdapter(this, recipes, new RecipeAdapter.OnItemClick() {
+            @Override
+            public void onItemClicked(Recipe recipe) {
+                Intent intent = new Intent(MainActivity.this, StepListActivity.class);
+                intent.putExtra(StepListActivity.KEY_RECIPE, recipe);
+                startActivity(intent);
+            }
+        });
         recipeRecyclerView.setAdapter(recipeAdapter);
         if(recipeRecyclerView.getLayoutManager() instanceof GridLayoutManager){
             GridLayoutManager layoutManager = (GridLayoutManager) recipeRecyclerView.getLayoutManager();

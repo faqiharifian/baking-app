@@ -1,0 +1,46 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.arifian.bakingapp.fragments.StepFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/material_content_edge_margin_horizontal">
+        <RelativeLayout
+            android:id="@+id/relativeLayout_step_ingredient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/material_content_edge_margin_horizontal"
+            android:layout_marginBottom="@dimen/material_content_edge_margin_horizontal"
+            android:background="@color/colorPrimary">
+            <TextView
+                android:id="@+id/textView_step_ingredient"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/step_ingredients_subtitle"
+                android:textStyle="bold"
+                android:textColor="@color/material_color_white"/>
+            <LinearLayout
+                android:id="@+id/linearLayout_step_ingredients"
+                android:layout_below="@+id/textView_step_ingredient"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            </LinearLayout>
+        </RelativeLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView_step"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativeLayout_step_ingredient"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            android:orientation="vertical">
+
+        </android.support.v7.widget.RecyclerView>
+    </RelativeLayout>
+
+</ScrollView>

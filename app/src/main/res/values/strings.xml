@@ -4,4 +4,9 @@
     <string name="error_timeout">Connection timeout</string>
     <string name="recipe_servings">Servings: %1$s</string>
     <string name="main_title">Baking App</string>
+    <string name="title_activity_recipe_detail">RecipeDetailActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="step_ingredients_subtitle">Ingredient List:</string>
 </resources>
