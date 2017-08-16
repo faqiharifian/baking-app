@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.arifian.bakingapp.StepListActivity">
+    tools:context="com.arifian.bakingapp.StepDetailActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -20,14 +20,12 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/fragment_main"
-        android:name="com.arifian.bakingapp.fragments.StepFragment"
+    <fragment 
+        android:id="@+id/fragment_step_detail"
+        android:name="com.arifian.bakingapp.fragments.StepDetailFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:layout="@layout/fragment_step" />
+        tools:layout="@layout/fragment_step_detail" />
 
 </android.support.design.widget.CoordinatorLayout>

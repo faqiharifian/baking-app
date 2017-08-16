@@ -38,7 +38,11 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Step step = steps.get(position);
-        holder.nameTextView.setText(step.getShortDescription());
+        if(position > 0){
+            holder.nameTextView.setText(position+". "+step.getShortDescription());
+        }else{
+            holder.nameTextView.setText(step.getShortDescription());
+        }
         if(step.getVideoURL().isEmpty()){
             holder.playImageView.setVisibility(View.GONE);
         }

@@ -1,14 +1,15 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView_step"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.arifian.bakingapp.fragments.StepFragment">
+    tools:context="com.arifian.bakingapp.fragments.StepListFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/material_content_edge_margin_horizontal">
+        android:padding="@dimen/material_content_edge_margin_horizontal">
         <RelativeLayout
             android:id="@+id/relativeLayout_step_ingredient"
             android:layout_width="match_parent"
