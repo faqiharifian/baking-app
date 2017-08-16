@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.arifian.bakingapp.R;
@@ -29,7 +30,7 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StepFragment extends Fragment {
+public class StepListFragment extends Fragment {
     public static final String KEY_INGREDIENTS = "ingredients";
     public static final String KEY_STEPS = "steps";
     public static final String KEY_POSITION = "position";
@@ -41,6 +42,8 @@ public class StepFragment extends Fragment {
 
     StepAdapter stepAdapter;
 
+    @BindView(R2.id.scrollView_step)
+    ScrollView stepScrollView;
     @BindView(R2.id.linearLayout_step_ingredients)
     LinearLayout ingredientLinearLayout;
     @BindView(R2.id.recyclerView_step)
@@ -52,7 +55,7 @@ public class StepFragment extends Fragment {
     @BindColor(R2.color.colorPrimary) int primaryColor;
     @BindColor(R2.color.material_typography_secondary_text_color_dark) int textColor;
 
-    public StepFragment() {
+    public StepListFragment() {
         // Required empty public constructor
     }
 
@@ -60,7 +63,7 @@ public class StepFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_step, container, false);
+        View view = inflater.inflate(R.layout.fragment_step_list, container, false);
         ButterKnife.bind(this, view);
 
         stepAdapter = new StepAdapter(steps, new StepAdapter.OnItemClick() {
@@ -101,9 +104,22 @@ public class StepFragment extends Fragment {
         this.steps.clear();
         this.steps.addAll(steps);
         stepAdapter.notifyDataSetChanged();
-        if(selectedPosition != -1){
-            select();
-        }
+        stepRecyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                if(selectedPosition != -1){
+                    select();
+                }else{
+                    stepScrollView.fullScroll(ScrollView.FOCUS_UP);
+                }
+            }
+        });
+    }
+
+    public void setPosition(int position){
+        unselect();
+        this.selectedPosition = position;
+        select();
     }
 
     public void setOnStepClicked(OnStepClick onStepClick){
