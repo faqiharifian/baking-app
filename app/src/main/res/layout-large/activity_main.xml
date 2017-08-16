@@ -26,8 +26,8 @@
         android:paddingLeft="@dimen/material_content_edge_margin_horizontal"
         android:paddingRight="@dimen/material_content_edge_margin_horizontal"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        android:orientation="vertical">
+        app:layoutManager="android.support.v7.widget.GridLayoutManager"
+        app:spanCount="3">
 
     </android.support.v7.widget.RecyclerView>
 

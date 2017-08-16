@@ -2,7 +2,7 @@ package com.arifian.bakingapp;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
@@ -11,6 +11,7 @@ import com.arifian.bakingapp.adapter.RecipeAdapter;
 import com.arifian.bakingapp.connection.BakingClient;
 import com.arifian.bakingapp.connection.BakingService;
 import com.arifian.bakingapp.entities.Recipe;
+import com.arifian.bakingapp.views.SpaceGridItemDecorator;
 
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
@@ -23,14 +24,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-    @BindView(R2.id.toolbar) Toolbar toolbar;
+    public static final String KEY_RECIPES = "recipes";
 
+    @BindView(R2.id.toolbar)
+    Toolbar toolbar;
     @BindView(R2.id.recyclerView_recipe)
     RecyclerView recipeRecyclerView;
 
-    RecyclerView.LayoutManager layoutManager;
-
-    List<Recipe> recipes = new ArrayList<>();
+    ArrayList<Recipe> recipes = new ArrayList<>();
 
     RecipeAdapter recipeAdapter;
 
@@ -44,11 +45,17 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(getString(R.string.main_title));
 
         recipeAdapter = new RecipeAdapter(this, recipes);
-        layoutManager = new LinearLayoutManager(this);
-        recipeRecyclerView.setLayoutManager(layoutManager);
         recipeRecyclerView.setAdapter(recipeAdapter);
+        if(recipeRecyclerView.getLayoutManager() instanceof GridLayoutManager){
+            GridLayoutManager layoutManager = (GridLayoutManager) recipeRecyclerView.getLayoutManager();
+            recipeRecyclerView.addItemDecoration(new SpaceGridItemDecorator(this, layoutManager.getSpanCount()));
+        }else {
+            recipeRecyclerView.addItemDecoration(new SpaceGridItemDecorator(this, 1));
+        }
 
-        getRecipes();
+        if(savedInstanceState == null){
+            getRecipes();
+        }
     }
 
     private void getRecipes(){
@@ -69,5 +76,19 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(KEY_RECIPES, recipes);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        ArrayList<Recipe> recipes = savedInstanceState.getParcelableArrayList(KEY_RECIPES);
+        this.recipes.addAll(recipes);
+        recipeAdapter.notifyDataSetChanged();
     }
 }
