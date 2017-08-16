@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:configure="com.arifian.bakingapp.widget.IngredientAppWidgetConfigureActivity"
+    android:initialKeyguardLayout="@layout/ingredient_app_widget"
+    android:initialLayout="@layout/ingredient_app_widget"
+    android:minHeight="180dp"
+    android:minWidth="250dp"
+    android:minResizeWidth="110dp"
+    android:minResizeHeight="180dp"
+    android:previewImage="@drawable/ingredient_preview"
+    android:resizeMode="horizontal|vertical"
+    android:updatePeriodMillis="86400000"
+    android:widgetCategory="home_screen"></appwidget-provider>

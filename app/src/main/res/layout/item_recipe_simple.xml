@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/textView_recipeName"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/material_list_single_line_without_avatar_dense_height"
+    android:paddingLeft="@dimen/material_list_text_first_position_margin_start"
+    android:paddingRight="@dimen/material_list_text_last_position_margin_end"
+    android:gravity="center_vertical"
+    android:textSize="@dimen/material_list_normal_primary_text_size"
+    android:text="fjnejrgn"/>
