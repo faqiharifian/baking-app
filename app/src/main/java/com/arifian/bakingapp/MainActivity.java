@@ -12,6 +12,7 @@ import com.arifian.bakingapp.adapter.RecipeAdapter;
 import com.arifian.bakingapp.connection.BakingClient;
 import com.arifian.bakingapp.connection.BakingService;
 import com.arifian.bakingapp.entities.Recipe;
+import com.arifian.bakingapp.utils.Preference;
 import com.arifian.bakingapp.views.SpaceGridItemDecorator;
 
 import java.net.SocketTimeoutException;
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
                 recipes.addAll(response.body());
                 recipeAdapter.notifyDataSetChanged();
+                (new Preference(MainActivity.this)).saveRecipes(recipes);
             }
 
             @Override

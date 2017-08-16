@@ -12,16 +12,6 @@ import com.arifian.bakingapp.R;
  */
 
 public class SquareImageView extends ImageView {
-    public static final int MEASUREMENT_WIDTH = 0;
-    public static final int MEASUREMENT_HEIGHT = 1;
-
-    private static final float DEFAULT_ASPECT_RATIO = 1f;
-    private static final boolean DEFAULT_ASPECT_RATIO_ENABLED = false;
-    private static final int DEFAULT_DOMINANT_MEASUREMENT = MEASUREMENT_WIDTH;
-
-    private float aspectRatio;
-    private boolean aspectRatioEnabled;
-    private int dominantMeasurement;
 
     public SquareImageView(Context context) {
         this(context, null);

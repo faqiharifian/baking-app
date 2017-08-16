@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.widget.Toast;
 
 import com.arifian.bakingapp.entities.Recipe;
 import com.arifian.bakingapp.entities.Step;
@@ -49,7 +48,6 @@ public class StepListActivity extends AppCompatActivity {
             public void stepClicked(Step step) {
                 if(stepDetailFragment != null) {
                     stepDetailFragment.setStep(step);
-                    Toast.makeText(StepListActivity.this, step.getShortDescription() + " clicked", Toast.LENGTH_SHORT).show();
                 }else{
                     Intent intent = new Intent(StepListActivity.this, StepDetailActivity.class);
                     intent.putExtra(StepDetailActivity.KEY_POSITION, recipe.getSteps().indexOf(step));
