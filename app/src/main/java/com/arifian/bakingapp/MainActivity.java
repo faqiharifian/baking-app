@@ -2,6 +2,9 @@ package com.arifian.bakingapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +16,7 @@ import com.arifian.bakingapp.connection.BakingClient;
 import com.arifian.bakingapp.connection.BakingService;
 import com.arifian.bakingapp.entities.Recipe;
 import com.arifian.bakingapp.utils.Preference;
+import com.arifian.bakingapp.utils.SimpleIdlingResource;
 import com.arifian.bakingapp.views.SpaceGridItemDecorator;
 
 import java.net.SocketTimeoutException;
@@ -24,6 +28,7 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
     public static final String KEY_RECIPES = "recipes";
@@ -36,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Recipe> recipes = new ArrayList<>();
 
     RecipeAdapter recipeAdapter;
+
+    SimpleIdlingResource idlingResource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,17 +76,23 @@ public class MainActivity extends AppCompatActivity {
 
     private void getRecipes(){
         recipes.clear();
-        BakingClient.getClient().create(BakingService.class).getRecipes().enqueue(new Callback<List<Recipe>>() {
+
+        Retrofit client = BakingClient.getClient();
+        idlingResource = new SimpleIdlingResource();
+        idlingResource.setIdleState(false);
+        client.create(BakingService.class).getRecipes().enqueue(new Callback<List<Recipe>>() {
             @Override
             public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
                 recipes.addAll(response.body());
                 recipeAdapter.notifyDataSetChanged();
                 (new Preference(MainActivity.this)).saveRecipes(recipes);
+                idlingResource.setIdleState(true);
             }
 
             @Override
             public void onFailure(Call<List<Recipe>> call, Throwable t) {
                 t.printStackTrace();
+                idlingResource.setIdleState(true);
                 if(t instanceof SocketTimeoutException)
                     Toast.makeText(MainActivity.this, getString(R.string.error_timeout), Toast.LENGTH_SHORT).show();
                 else
@@ -100,5 +113,14 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Recipe> recipes = savedInstanceState.getParcelableArrayList(KEY_RECIPES);
         this.recipes.addAll(recipes);
         recipeAdapter.notifyDataSetChanged();
+    }
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (idlingResource == null) {
+            idlingResource = new SimpleIdlingResource();
+        }
+        return idlingResource;
     }
 }
