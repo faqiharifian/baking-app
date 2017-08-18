@@ -55,6 +55,7 @@ public class StepListActivity extends AppCompatActivity {
             public void stepClicked(Step step) {
                 if(stepDetailFragment != null) {
                     stepDetailFragment.setStep(step);
+                    stepDetailFragment.startPlaying();
                 }else{
                     Intent intent = new Intent(StepListActivity.this, StepDetailActivity.class);
                     intent.putExtra(StepDetailActivity.KEY_POSITION, recipe.getSteps().indexOf(step));
