@@ -81,6 +81,7 @@ public class StepListActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         getSupportFragmentManager().putFragment(outState, KEY_FRAGMENT_LIST, stepListFragment);
-        getSupportFragmentManager().putFragment(outState, KEY_FRAGMENT_DETAIL, stepDetailFragment);
+        if(stepDetailFragment != null)
+            getSupportFragmentManager().putFragment(outState, KEY_FRAGMENT_DETAIL, stepDetailFragment);
     }
 }
