@@ -116,10 +116,18 @@ public class StepListFragment extends Fragment {
         });
     }
 
-    public void setPosition(int position){
-        unselect();
-        this.selectedPosition = position;
-        select();
+    public void setPosition(final int position){
+        if(position != -1) {
+            stepRecyclerView.post(new Runnable() {
+                @Override
+                public void run() {
+
+            unselect();
+            StepListFragment.this.selectedPosition = position;
+            select();
+                }
+            });
+        }
     }
 
     public void setOnStepClicked(OnStepClick onStepClick){
@@ -144,6 +152,7 @@ public class StepListFragment extends Fragment {
         view.setBackgroundColor(Color.WHITE);
         ((TextView) view.findViewById(R.id.textView_step_name)).setTextColor(textColor);
         ((ImageView) view.findViewById(R.id.imageView_step_play)).setColorFilter(primaryDarkColor);
+
     }
 
     private void select(){

@@ -16,6 +16,8 @@ import butterknife.ButterKnife;
 
 public class StepListActivity extends AppCompatActivity {
     public static final String KEY_RECIPE = "recipe";
+    public static final String KEY_FRAGMENT_LIST = "fragment_list";
+    public static final String KEY_FRAGMENT_DETAIL = "fragment_detail";
 
     Recipe recipe = new Recipe();
 
@@ -39,8 +41,13 @@ public class StepListActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(recipe.getName());
         }
 
-        stepDetailFragment = (StepDetailFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_step_detail);
-        stepListFragment = (StepListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_step_list);
+        if(savedInstanceState == null) {
+            stepDetailFragment = (StepDetailFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_step_detail);
+            stepListFragment = (StepListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_step_list);
+        }else{
+            stepDetailFragment = (StepDetailFragment) getSupportFragmentManager().getFragment(savedInstanceState, KEY_FRAGMENT_LIST);
+            stepListFragment = (StepListFragment) getSupportFragmentManager().getFragment(savedInstanceState, KEY_FRAGMENT_DETAIL);
+        }
         stepListFragment.setIngredients(recipe.getIngredients());
         stepListFragment.setSteps(recipe.getSteps());
         stepListFragment.setOnStepClicked(new StepListFragment.OnStepClick(){
@@ -68,5 +75,12 @@ public class StepListActivity extends AppCompatActivity {
                 default:
                     super.onActivityResult(requestCode, resultCode, data);
             }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        getSupportFragmentManager().putFragment(outState, KEY_FRAGMENT_LIST, stepListFragment);
+        getSupportFragmentManager().putFragment(outState, KEY_FRAGMENT_DETAIL, stepDetailFragment);
     }
 }

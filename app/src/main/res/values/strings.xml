@@ -11,4 +11,8 @@
     <string name="stepDetail_startCooking">Select Step to Start Cooking</string>
     <string name="action_ok">OK</string>
     <string name="widgetConfigure_title">Select Recipe</string>
+
+    <string name="title_activity_fullscreen_step_detail">FullscreenStepDetailActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

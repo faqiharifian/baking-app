@@ -50,12 +50,18 @@
                 android:resource="@xml/ingredient_app_widget_info" />
         </receiver>
 
-        <activity android:name=".widget.IngredientAppWidgetConfigureActivity"
+        <activity
+            android:name=".widget.IngredientAppWidgetConfigureActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".FullscreenStepDetailActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_fullscreen_step_detail"
+            android:theme="@style/FullscreenTheme"></activity>
     </application>
 
 </manifest>
