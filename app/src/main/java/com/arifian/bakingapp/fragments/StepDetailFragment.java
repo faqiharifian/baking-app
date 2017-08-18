@@ -47,6 +47,7 @@ import static com.google.android.exoplayer2.Player.STATE_ENDED;
  */
 public class StepDetailFragment extends Fragment {
     public static final String KEY_STEP = "step";
+    public static final String KEY_PLAYER_POSITION = "position";
     Step step = new Step();
 
     @BindView(R2.id.linearLayout_stepDetail_default)
@@ -61,6 +62,7 @@ public class StepDetailFragment extends Fragment {
     TextView descriptionTextView;
 
     SimpleExoPlayer player;
+    long playerPosition = C.TIME_UNSET;
 
     public StepDetailFragment() {
     }
@@ -81,9 +83,10 @@ public class StepDetailFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         if(savedInstanceState != null){
-            setStep((Step) savedInstanceState.getParcelable(KEY_STEP));
+            playerPosition = getArguments().getLong(KEY_PLAYER_POSITION, C.TIME_UNSET);
             defaultLinearLayout.setVisibility(View.GONE);
             detailScrollView.setVisibility(View.VISIBLE);
+            setStep((Step) savedInstanceState.getParcelable(KEY_STEP));
         }
         if(getArguments() != null){
             setStep((Step) getArguments().getParcelable(KEY_STEP));
@@ -91,6 +94,14 @@ public class StepDetailFragment extends Fragment {
 
         playerView.requestFocus();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(!step.getVideoURL().isEmpty()) {
+            initializePlayer(Uri.parse(step.getVideoURL()));
+        }
     }
 
     public void setStep(Step step){
@@ -124,10 +135,11 @@ public class StepDetailFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(KEY_STEP, step);
+        outState.putLong(KEY_PLAYER_POSITION, playerPosition);
     }
 
     private void initializePlayer(Uri mediaUri) {
-        if(player != null)
+        if(player != null && playerPosition == C.TIME_UNSET)
             releasePlayer();
         if (player == null) {
             // Create an instance of the ExoPlayer.
@@ -141,6 +153,7 @@ public class StepDetailFragment extends Fragment {
                     getActivity(), userAgent), new DefaultExtractorsFactory(), null, null);
             player.prepare(mediaSource);
             player.setPlayWhenReady(true);
+            if (playerPosition != C.TIME_UNSET) player.seekTo(playerPosition);
             player.addListener(new Player.EventListener() {
                 @Override
                 public void onTimelineChanged(Timeline timeline, Object manifest) {
@@ -198,14 +211,10 @@ public class StepDetailFragment extends Fragment {
 
     @Override
     public void onPause() {
-        if (player != null)
-            player.setPlayWhenReady(false);
+        if(player != null) {
+            playerPosition = player.getCurrentPosition();
+            releasePlayer();
+        }
         super.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        releasePlayer();
-        super.onDestroy();
     }
 }
