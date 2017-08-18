@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 
 import com.arifian.bakingapp.fragments.StepDetailFragment;
@@ -48,6 +47,7 @@ public class FullscreenStepDetailActivity extends AppCompatActivity {
     SimpleExoPlayerView playerView;
     SimpleExoPlayer player;
     long playerPosition = C.TIME_UNSET;
+    Uri mediaUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,14 +70,14 @@ public class FullscreenStepDetailActivity extends AppCompatActivity {
         Bundle args = getIntent().getExtras();
         if(args != null){
             playerPosition = args.getLong(KEY_POSITION);
-            initializePlayer(Uri.parse(args.getString(KEY_VIDEO)));
+            mediaUri = Uri.parse(args.getString(KEY_VIDEO));
+            initializePlayer();
         }
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        Log.e("config change", String.valueOf(newConfig.orientation == Configuration.ORIENTATION_PORTRAIT));
         if(newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
             onBackPressed();
         }
@@ -92,7 +92,7 @@ public class FullscreenStepDetailActivity extends AppCompatActivity {
         finish();
     }
 
-    private void initializePlayer(Uri mediaUri) {
+    private void initializePlayer() {
         if (player == null) {
             // Create an instance of the ExoPlayer.
             TrackSelector trackSelector = new DefaultTrackSelector();
@@ -161,11 +161,34 @@ public class FullscreenStepDetailActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (Util.SDK_INT > 23) {
+            initializePlayer();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if ((Util.SDK_INT <= 23 || player == null)) {
+            initializePlayer();
+        }
+    }
+
+    @Override
     public void onPause() {
-        if(player != null) {
-            playerPosition = player.getCurrentPosition();
+        super.onPause();
+        if (Util.SDK_INT <= 23) {
             releasePlayer();
         }
-        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (Util.SDK_INT > 23) {
+            releasePlayer();
+        }
     }
 }

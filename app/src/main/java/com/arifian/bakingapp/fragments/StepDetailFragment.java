@@ -1,13 +1,10 @@
 package com.arifian.bakingapp.fragments;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,7 +88,7 @@ public class StepDetailFragment extends Fragment {
 
         if(savedInstanceState != null){
             if(playerPosition <= 0)
-                playerPosition = getArguments().getLong(KEY_PLAYER_POSITION, C.TIME_UNSET);
+                playerPosition = savedInstanceState.getLong(KEY_PLAYER_POSITION, C.TIME_UNSET);
             defaultLinearLayout.setVisibility(View.GONE);
             detailScrollView.setVisibility(View.VISIBLE);
             Step step = savedInstanceState.getParcelable(KEY_STEP);
@@ -243,34 +240,35 @@ public class StepDetailFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (Util.SDK_INT > 23) {
+            initializePlayer();
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
+        if ((Util.SDK_INT <= 23 || player == null)) {
+            initializePlayer();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (Util.SDK_INT <= 23) {
+            releasePlayer();
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-    }
-
-    @Override
-    public void onPause() {
-        if(player != null) {
-            playerPosition = player.getCurrentPosition();
+        if (Util.SDK_INT > 23) {
             releasePlayer();
         }
-        super.onPause();
     }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == Activity.RESULT_OK && requestCode == 102){
-            playerPosition = data.getLongExtra(KEY_PLAYER_POSITION, C.TIME_UNSET);
-            if(!step.getVideoURL().isEmpty()) {
-//                initializePlayer(Uri.parse(step.getVideoURL()));
-            }
-        }
-    }
-
 
 }

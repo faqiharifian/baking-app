@@ -4,6 +4,7 @@ package com.arifian.bakingapp.fragments;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -34,8 +35,9 @@ public class StepListFragment extends Fragment {
     public static final String KEY_INGREDIENTS = "ingredients";
     public static final String KEY_STEPS = "steps";
     public static final String KEY_POSITION = "position";
+    public static final String KEY_SCROLL_POSITION = "scroll_position";
 
-    int selectedPosition = -1;
+    int selectedPosition = -1, scrollPosition = -1;
 
     ArrayList<Ingredient> ingredients = new ArrayList<>();
     ArrayList<Step> steps = new ArrayList<>();
@@ -43,7 +45,7 @@ public class StepListFragment extends Fragment {
     StepAdapter stepAdapter;
 
     @BindView(R2.id.scrollView_step)
-    ScrollView stepScrollView;
+    NestedScrollView stepScrollView;
     @BindView(R2.id.linearLayout_step_ingredients)
     LinearLayout ingredientLinearLayout;
     @BindView(R2.id.recyclerView_step)
@@ -85,6 +87,8 @@ public class StepListFragment extends Fragment {
             setIngredients(ingredients);
             selectedPosition = savedInstanceState.getInt(KEY_POSITION);
             ArrayList<Step> steps = savedInstanceState.getParcelableArrayList(KEY_STEPS);
+            scrollPosition = savedInstanceState.getInt(KEY_SCROLL_POSITION, -1);
+
             setSteps(steps);
         }
 
@@ -110,7 +114,10 @@ public class StepListFragment extends Fragment {
                 if(selectedPosition != -1){
                     select();
                 }else{
-                    stepScrollView.fullScroll(ScrollView.FOCUS_UP);
+                    if(scrollPosition == -1)
+                        stepScrollView.fullScroll(ScrollView.FOCUS_UP);
+                    else
+                        stepScrollView.scrollTo(scrollPosition, stepScrollView.getScrollY());
                 }
             }
         });
@@ -145,6 +152,7 @@ public class StepListFragment extends Fragment {
         outState.putParcelableArrayList(KEY_INGREDIENTS, ingredients);
         outState.putParcelableArrayList(KEY_STEPS, steps);
         outState.putInt(KEY_POSITION, selectedPosition);
+        outState.putInt(KEY_SCROLL_POSITION, stepScrollView.getScrollX());
     }
 
     private void unselect(){

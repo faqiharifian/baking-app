@@ -45,8 +45,8 @@ public class StepListActivity extends AppCompatActivity {
             stepDetailFragment = (StepDetailFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_step_detail);
             stepListFragment = (StepListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_step_list);
         }else{
-            stepDetailFragment = (StepDetailFragment) getSupportFragmentManager().getFragment(savedInstanceState, KEY_FRAGMENT_LIST);
-            stepListFragment = (StepListFragment) getSupportFragmentManager().getFragment(savedInstanceState, KEY_FRAGMENT_DETAIL);
+            stepDetailFragment = (StepDetailFragment) getSupportFragmentManager().getFragment(savedInstanceState, KEY_FRAGMENT_DETAIL);
+            stepListFragment = (StepListFragment) getSupportFragmentManager().getFragment(savedInstanceState, KEY_FRAGMENT_LIST);
         }
         stepListFragment.setIngredients(recipe.getIngredients());
         stepListFragment.setSteps(recipe.getSteps());
