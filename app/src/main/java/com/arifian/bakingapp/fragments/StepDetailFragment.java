@@ -93,6 +93,7 @@ public class StepDetailFragment extends Fragment {
             defaultLinearLayout.setVisibility(View.GONE);
             detailScrollView.setVisibility(View.VISIBLE);
             Step step = savedInstanceState.getParcelable(KEY_STEP);
+            canPlay = true;
             setStep(step);
         }
         if(getArguments() != null){
@@ -100,6 +101,7 @@ public class StepDetailFragment extends Fragment {
         }
 
         playerView.requestFocus();
+        setRetainInstance(true);
         return view;
     }
 
@@ -110,10 +112,10 @@ public class StepDetailFragment extends Fragment {
 
         descriptionTextView.setText(step.getDescription());
 
-        if(!step.getVideoURL().isEmpty()){
+        if (!TextUtils.isEmpty(step.getVideoURL())) {
             playerView.setVisibility(View.VISIBLE);
 
-            if(!step.getThumbnailURL().isEmpty()) {
+            if (!step.getThumbnailURL().isEmpty()) {
                 Glide.with(getActivity())
                         .asBitmap()
                         .load(step.getThumbnailURL()).into(new SimpleTarget<Bitmap>() {
@@ -125,8 +127,9 @@ public class StepDetailFragment extends Fragment {
             }
 
             initializePlayer();
-        }else{
-            playerView.setVisibility(View.GONE);
+        } else {
+            defaultLinearLayout.setVisibility(View.VISIBLE);
+            detailScrollView.setVisibility(View.GONE);
         }
     }
 
@@ -234,6 +237,7 @@ public class StepDetailFragment extends Fragment {
     public void releasePlayer() {
         canPlay = false;
         if(player != null) {
+            playerPosition = player.getCurrentPosition();
             player.stop();
             player.release();
             player = null;

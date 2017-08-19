@@ -55,7 +55,11 @@ public class StepDetailActivity extends AppCompatActivity implements ViewPager.O
             recipe = savedInstanceState.getParcelable(KEY_RECIPE);
         }
 
-        pagerAdapter = new StepPagerAdapter(getSupportFragmentManager(), this, recipe.getSteps());
+        if (pagerAdapter==null) {
+            pagerAdapter = new StepPagerAdapter(getSupportFragmentManager(), this, recipe.getSteps());
+        } else {
+            pagerAdapter = (StepPagerAdapter) stepViewPager.getAdapter();
+        }
         stepViewPager.setAdapter(pagerAdapter);
         stepViewPager.setCurrentItem(selectedPosition);
         stepTabLayout.setupWithViewPager(stepViewPager);
